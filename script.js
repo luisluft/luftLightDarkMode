@@ -13,24 +13,27 @@ function setImageMode(color) {
   image3.src = `img-luft/undraw_Street_food_${color}.svg`;
 }
 
-function darkMode() {
-  localStorage.setItem("theme", "dark");
-  document.documentElement.setAttribute("data-theme", "dark");
-  nav.style.backgroundColor = "rgba(0 0 0 / 50%)";
-  textBox.style.backgroundColor = "rgba(255 255 255 / 50%)";
-  toggleIcon.children[0].textContent = "Dark Mode";
-  toggleIcon.children[1].classList.replace("fa-sun", "fa-moon");
-  setImageMode("dark");
-}
-
-function lightMode() {
-  localStorage.setItem("theme", "light");
-  document.documentElement.setAttribute("data-theme", "light");
-  nav.style.backgroundColor = "rgba(255 255 255 / 50%)";
-  textBox.style.backgroundColor = "rgba(0 0 0 / 50%)";
-  toggleIcon.children[0].textContent = "Light Mode";
-  toggleIcon.children[1].classList.replace("fa-moon", "fa-sun");
-  setImageMode("light");
+function toggleMode(mode) {
+  let isDark;
+  if (mode === "dark") isDark = true;
+  else isDark = false;
+  nav.style.backgroundColor = isDark
+    ? "rgba(0 0 0 / 50%)"
+    : "rgba(255 255 255 / 50%)";
+  textBox.style.backgroundColor = isDark
+    ? "rgba(255 255 255 / 50%)"
+    : "rgba(0 0 0 / 50%)";
+  toggleIcon.children[0].textContent = isDark ? "Dark Mode" : "Light Mode";
+  isDark
+    ? toggleIcon.children[1].classList.replace("fa-sun", "fa-moon")
+    : toggleIcon.children[1].classList.replace("fa-moon", "fa-sun");
+  isDark
+    ? document.documentElement.setAttribute("data-theme", "dark")
+    : document.documentElement.setAttribute("data-theme", "light");
+  isDark ? setImageMode("dark") : setImageMode("light");
+  isDark
+    ? localStorage.setItem("theme", "dark")
+    : localStorage.setItem("theme", "light");
 }
 
 function setLocalStorageTheme(event) {
@@ -43,15 +46,14 @@ function setLocalStorageTheme(event) {
 
 function switchTheme(event) {
   setLocalStorageTheme(event);
-
   currentTheme = localStorage.getItem("theme");
-  if (currentTheme === "dark") darkMode();
-  else lightMode();
+  if (currentTheme === "dark") toggleMode("dark");
+  else toggleMode("light");
 }
 
 if (currentTheme === "dark") {
-  darkMode();
+  toggleMode("dark");
   toggleSwitch.checked = true;
-} else lightMode();
+} else toggleMode("light");
 
 toggleSwitch.addEventListener("change", switchTheme);
