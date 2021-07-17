@@ -1,3 +1,4 @@
+let currentTheme = localStorage.getItem("theme");
 const toggleSwitch = document.querySelector('input[type="checkbox"]');
 const nav = document.getElementById("nav");
 const toggleIcon = document.getElementById("toggle-icon");
@@ -13,6 +14,7 @@ function setImageMode(color) {
 }
 
 function darkMode() {
+  localStorage.setItem("theme", "dark");
   document.documentElement.setAttribute("data-theme", "dark");
   nav.style.backgroundColor = "rgba(0 0 0 / 50%)";
   textBox.style.backgroundColor = "rgba(255 255 255 / 50%)";
@@ -22,6 +24,7 @@ function darkMode() {
 }
 
 function lightMode() {
+  localStorage.setItem("theme", "light");
   document.documentElement.setAttribute("data-theme", "light");
   nav.style.backgroundColor = "rgba(255 255 255 / 50%)";
   textBox.style.backgroundColor = "rgba(0 0 0 / 50%)";
@@ -30,12 +33,25 @@ function lightMode() {
   setImageMode("light");
 }
 
-function switchTheme(event) {
+function setLocalStorageTheme(event) {
   if (event.target.checked) {
-    darkMode();
+    localStorage.setItem("theme", "dark");
   } else {
-    lightMode();
+    localStorage.setItem("theme", "light");
   }
 }
+
+function switchTheme(event) {
+  setLocalStorageTheme(event);
+
+  currentTheme = localStorage.getItem("theme");
+  if (currentTheme === "dark") darkMode();
+  else lightMode();
+}
+
+if (currentTheme === "dark") {
+  darkMode();
+  toggleSwitch.checked = true;
+} else lightMode();
 
 toggleSwitch.addEventListener("change", switchTheme);

@@ -27,6 +27,7 @@ html {
 }
 
 body {
+  transition: all 0.2s ease;
   font-family: "Uchen";
   margin: 0;
   color: var(--on-background);
